@@ -91,7 +91,7 @@ class Dialog(c4d.gui.GeDialog):
         else:
             self.thread_get_texture.create_ui = True
 
-        self.thread_get_texture.Start()
+        self.thread_get_texture.Start(c4d.THREADMODE_ASYNC, c4d.THREADPRIORITY_BELOW)
 
     def create_bitmap(self, bmp, ui_id, x, y):
         if isinstance(bmp, (str, unicode)):
@@ -191,16 +191,20 @@ class Dialog(c4d.gui.GeDialog):
         text = "Textures : "+str(total_tex)+" - Missing : "+str(nb_missing)+" - Need relocation : "+str(nb_relocate)
 
         if redraw:
-            self.SetString(const.UI_TEXT_BOTTOM, text)
+            self.LayoutFlushGroup(const.UI_BOTTOM_GRP)
         else:
-            self.AddStaticText(const.UI_TEXT_BOTTOM, c4d.BFH_SCALEFIT, name=text)
+            self.GroupBegin(const.UI_BOTTOM_GRP, flags=c4d.BFH_SCALEFIT | c4d.BFV_BOTTOM, cols=1)
 
-        self.LayoutChanged(const.UI_TEXT_BOTTOM)
+        self.AddSeparatorH(0)
+        self.AddStaticText(const.UI_TEXT_BOTTOM, c4d.BFH_SCALEFIT, name=text)
+
+        self.GroupEnd()
+
+        self.LayoutChanged(const.UI_BOTTOM_GRP)
 
     def create_content(self):
         self.create_all_texture_lines()
 
-        self.AddSeparatorH(0)
         self.create_bottom_menu()
 
     def CreateLayout(self):
