@@ -180,8 +180,8 @@ class Dialog(c4d.gui.GeDialog):
             self.GroupEnd()
         self.GroupEnd()
         self.GroupEnd()
-        if redraw:
-            self.LayoutChanged(const.UI_MAIN_GRP)
+
+        self.LayoutChanged(const.UI_MAIN_GRP)
 
     def create_bottom_menu(self, redraw=False):
         nb_missing = len(self.texture_not_found)
@@ -194,6 +194,8 @@ class Dialog(c4d.gui.GeDialog):
             self.SetString(const.UI_TEXT_BOTTOM, text)
         else:
             self.AddStaticText(const.UI_TEXT_BOTTOM, c4d.BFH_SCALEFIT, name=text)
+
+        self.LayoutChanged(const.UI_TEXT_BOTTOM)
 
     def create_content(self):
         self.create_all_texture_lines()
